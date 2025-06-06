@@ -2,7 +2,8 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "Tic-Tac-Total Recall",
+  title: " ",
+  titleTemplate: "a solitaire game with a mixture of elements",
   description: "TIC-TAC-TOTAL RECALL",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
