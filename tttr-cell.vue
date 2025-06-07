@@ -31,7 +31,7 @@ SOFTWARE.
 
 <script lang="ts" setup>
 import { defineEmits } from 'vue'
-import { Empty, CardSurface } from './cards-xo' 
+import { Empty, CardSurface, Deck } from './cards-xo' 
 
 const { row, col, card = Empty } = defineProps<{
   row: number
@@ -48,6 +48,7 @@ function style() {
 }
 
 const emit = defineEmits<{
-
+  (e: 'select', i: number, j: number): void
+  (e: 'deal', i: number, j: number, deck: Deck): void
 }>()
 </script>
