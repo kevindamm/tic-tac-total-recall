@@ -27,7 +27,8 @@ SOFTWARE.
 -->
 
 <div class="fluid-container">
-  <status-game
+  <game-status
+    :statusMsg
     :history
     :board
     :deck
@@ -43,6 +44,7 @@ SOFTWARE.
 <script lang="ts" setup>
 import GameBoard from './tttr-board.vue'
 import DeckPile from './deck-pile.vue'
+import GameStatus from './game-status.vue'
 
 import { useStorage } from '@vueuse/core'
 import { useCardBoard } from './cardboard.ts'
@@ -52,6 +54,7 @@ const history = useStorage('history', {
   outcomes: []
 })
 
+const statusMsg = ref('')
 const board = useCardBoard()
 const deck = useDeck(9)
 

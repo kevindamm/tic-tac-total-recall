@@ -26,7 +26,8 @@ SOFTWARE.
     <img v-if="!deck.exhausted()"
       class="deck-pile"
       src="/img/card-back.png"
-      >
+      @click="$emit('draw', deck)"
+      />
   </div>
 </template>
 
@@ -37,6 +38,9 @@ const { deck } = defineProps<{
   deck: Deck
 }>()
 
+const emit = defineEmits<{
+  draw: [deck: Deck]
+}>()
 </script>
 
 <style>

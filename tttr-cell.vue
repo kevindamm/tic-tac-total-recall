@@ -25,18 +25,25 @@ SOFTWARE.
   <div
     draggable="true"
     :class="style()">
-  oh hi!  
+  {{ row }}, {{ col }}
+  <p>{{ card.card }}</p>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { defineEmits } from 'vue'
 import { Empty, CardSurface, Deck } from './cards-xo' 
 
 const { row, col, card = Empty } = defineProps<{
   row: number
   col: number
-  card: CardSurface
+  card?: CardSurface
+}>()
+
+const emit = defineEmits<{
+  select: [i: number, j: number]
+  deal: [i: number, j: number, deck: Deck]
+  filled: []
+  reveal: [selected: number[]]
 }>()
 
 function style() {
@@ -47,8 +54,4 @@ function style() {
   return classes
 }
 
-const emit = defineEmits<{
-  (e: 'select', i: number, j: number): void
-  (e: 'deal', i: number, j: number, deck: Deck): void
-}>()
 </script>
