@@ -26,7 +26,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 -->
 
-<div class="fluid-container">
+<main class="container">
   <game-status
     :statusMsg
     :history
@@ -39,7 +39,9 @@ SOFTWARE.
   <deck-pile
     :deck
     />
-</div>
+</main>
+
+
 
 <script lang="ts" setup>
 import GameBoard from './tttr-board.vue'
@@ -58,11 +60,11 @@ const statusMsg = ref('')
 const board = useCardBoard()
 const deck = useDeck(9)
 
+// TODO game history, event handling, state updates
 </script>
 
+
+
 <style module>
-.wrapper {
-  display: flex;
-  justify-content: center;
-}
+
 </style>

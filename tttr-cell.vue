@@ -24,11 +24,14 @@ SOFTWARE.
 <template>
   <div
     draggable="true"
-    :class="style()">
-  {{ row }}, {{ col }}
-  <p>{{ card.card }}</p>
+    :class="['grid-cell', `cell_${row}_${col}`]"
+    >
+    {{ row }}, {{ col }}
+    <p>{{ card.card }}</p>
   </div>
 </template>
+
+
 
 <script lang="ts" setup>
 import { Empty, CardSurface, Deck } from './cards-xo' 
@@ -46,12 +49,54 @@ const emit = defineEmits<{
   reveal: [selected: number[]]
 }>()
 
-function style() {
-  const classes = {
-    "grid-cell": true
-  }
-  classes[`cell_${row}_${col}`] = true
-  return classes
+
+
+
+/*
+DiscriminatedUnion from an actions metatype to IIMT?
+
+type Prettify<T> = {
+  [K in keyof T]: T[K]
+} & {}
+
+type coord = {
+  i: number
+  j: number
 }
 
+// Inclusive collection of available actions.
+// Could also construct this out of &-union of subtypes.
+type GameplayActions = {
+  filled: {}
+  select: coord
+  deal: coord & {
+    deck: Deck
+  }
+  reveal: {
+    selected: coord[]
+  }
+}
+
+// This gives us a proper discriminated union from the above set-like mapping of
+// actions, and this can be used in .
+type ActionsUnion = {
+  [K in keyof GameplayActions]: Prettify<
+    {
+      type: K
+    } & GameplayActions[K]>
+}[keyof GameplayActions]
+
+// Then, defineEmits can take a different transform of GameplayActions
+type EmittedActions = {
+  [K in keyof GameplayActions]: //...? list of argument key-values
+}
+// if we can't get the full typing this way,
+// just the list of keys of GameplayActions will provide that
+// but won't provide typing to the language server.
+
+
+Although this could help reduce re-typing across client/server and connected
+protocol, it belongs in more general abstraction and not in this toy.
+*/
 </script>
+

@@ -1,5 +1,5 @@
 ---
-title: About Tic-Tac-Total Recall
+title: Game Rules | Tic-Tac-Total-Recall
 author: Kevin Damm
 ---
 
@@ -26,25 +26,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 -->
 
-# About this site
+# How to play Tic-Tac-Total-Recall
 
-This is a stub article, I still need to write it up.  It describes the tech stack
-for this game/website and how the game was designed.
+This game as a solitaire is simple in terms of what you need to do.  You choose
+which locations on the board to deal out cards from a special deck, and if you
+get any lines with "X" cards while no lines were formed with "O" cards
+then you win!  If you want to play a bidding-strategy variant, you can have the
+cards revealed gradually, making wagers between the reveal of each group (all
+edges are shown first, then all corners and finally the center).  With 9 cards
+you can infer what the final card will be, but with 10 cards it may go either way
+at the final reveal, especially if you enable the game rule where it is the
+dominant card (the one which appears 5 instead of 4 times) that must get a line
+while not being blocked.
 
-## Vitepress + Vue3 + GitHub Pages
-
-The underlying tech is pretty simple, and because the game can be defined as a
-solitaire ruleset, the hosting can be done with static resources.  I can write
-up how to install the required dependencies and the basic file organization.
-
-## Drag-and-Drop within Vue3 components
-
-HTML5 provides Drand-and-Drop functionality through the use of Javascript event
-handlers and specific annotations on HTML tags.  I can describe some of that and
-how it is defined within the RectCell and Card components.
-
-## Game rules and origin
-
-This is just a silly game I came up with, first by considering the title and
-then by determining what its rules should be.
-
+<!-- TODO describe configuration, show UI controls, show example game endings -->
