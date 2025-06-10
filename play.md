@@ -1,5 +1,5 @@
 ---
-title: Play Tic-Tac-TOTAL RECALL
+title: Play Tic-Tac-TOTAL-RECALL
 author: Kevin Damm
 ---
 
@@ -45,9 +45,10 @@ SOFTWARE.
 
 <script lang="ts" setup>
 import GameBoard from './tttr-board.vue'
-import DeckPile from './deck-pile.vue'
-import GameStatus from './game-status.vue'
+import DeckPile from './tttr-deck.vue'
+import GameStatus from './tttr-status.vue'
 
+import { ref } from 'vue'
 import { useStorage } from '@vueuse/core'
 import { useCardBoard } from './cardboard.ts'
 import { useDeck } from './cards-xo'

@@ -22,7 +22,7 @@ SOFTWARE.
 -->
 
 <template>
-  <div class="board">
+  <div class="board-grid">
     <template v-for="row of 3">
       <board-position v-for="col of 3"
         :row :col
@@ -33,6 +33,8 @@ SOFTWARE.
     </template>
   </div>
 </template>
+
+
 
 <script lang="ts" setup>
 import BoardPosition from './tttr-cell.vue'
@@ -46,3 +48,22 @@ function handleSelect() {
   // TODO
 }
 </script>
+
+
+
+<style>
+:root {
+  --cell-width: clamp(80px, 25svmin, 160px);
+}
+.board-grid {
+  display: grid;
+  grid-template-columns: repeat(3, var(--cell-width));
+  grid-template-rows: repeat(3, var(--cell-width));
+  gap: 1svmin;
+}
+
+.board-grid * {
+  background-color: magenta;
+  opacity: 0.5;
+}
+</style>
