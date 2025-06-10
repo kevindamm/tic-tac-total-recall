@@ -53,7 +53,7 @@ export type CardSurface =
   | { type: "FaceUp", card: CardFront }
   | { type: "Empty", card: undefined }
 
-// Empty representation is a singleton.
+// Empty representation is a singleton, (const ... as const) is intentional.
 export const Empty = { type: "Empty", card: undefined } as const
 
 // COMPOSABLE useDeck
@@ -73,7 +73,7 @@ export function useDeck(seed?: number | number[]): Deck {
 
   // Returns true if there are no more cards remaining to deal.
   function exhausted(): boolean {
-    return index === cards.length
+    return (cards && length in cards && index === cards.length)
   }
 
   // Reset's the deck to the ordering it had when it was created, or to the

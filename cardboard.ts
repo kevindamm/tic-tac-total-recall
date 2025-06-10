@@ -47,7 +47,9 @@ export function useCardBoard(clone?: (i: number, j: number) => CardSurface): Car
   if (clone) {
     for (let row of [0, 1, 2]) {
       for (let col of [0, 1, 2]) {
-        board.value[row][col] = clone(row, col)
+        board.value = Array(3).map(
+          (row) => Array(3).map(
+            (col) => clone(row, col)))
       }
     }
   }
@@ -65,7 +67,10 @@ export function useCardBoard(clone?: (i: number, j: number) => CardSurface): Car
   
   // Returns the representation of the board cell at position (row, col)
   function at(row: number, col: number): CardSurface {
-    return board.value[row][col]
+    if (row in board.value && col in board.value[row]) {
+      return board.value[row][col]
+    }
+    return Empty
   }
 
   // Returns the number of complete three-aligned cards on the board, regardless

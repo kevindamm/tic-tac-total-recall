@@ -26,7 +26,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 -->
 
-# How to play Tic-Tac-Total-Recall
+# Game Rules (in detail)
+
+The game is played in three phases, *Dealing*, *Revealing* and *Bidding*.  You
+can optionally play without the bidding phase, in which case all cards are
+revealed at once.
+
+## First Phase: Dealing
+
+
+
+## Second Phase: Bidding
+
+
+
+## Third Phase: 
+
+
 
 This game as a solitaire is simple in terms of what you need to do.  You choose
 which locations on the board to deal out cards from a special deck, and if you
