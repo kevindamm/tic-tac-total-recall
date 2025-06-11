@@ -22,7 +22,7 @@ SOFTWARE.
 -->
 
 <template>
-  <div>
+  <div draggable="true">
     <img v-if="!deck.exhausted()"
       class="deck-pile"
       src="/img/card-back.png"

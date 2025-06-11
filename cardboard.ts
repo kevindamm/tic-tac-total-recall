@@ -24,7 +24,7 @@
 import { ref, type Ref } from 'vue'
 import { CardFront, CardSurface, Empty, Deck } from './cards-xo'
 
-type CellGroup = 'all' | 'edges' | 'corners' | 'center'
+type CellGroup = 'all' | 'edges' | 'corners' | 'center' | number[]
 
 export interface CardBoard3x3 {
   // getters

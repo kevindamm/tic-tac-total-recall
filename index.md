@@ -52,4 +52,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 -->
 
+<hr class="hr-spacer" />
+
 <!--@include: ./rules.md-->
+
+<style>
+.hr-spacer {
+  padding-top: 2em;
+}
+</style>

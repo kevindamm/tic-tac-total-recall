@@ -1,6 +1,7 @@
 ---
 title: Play Tic-Tac-TOTAL-RECALL
 author: Kevin Damm
+navbar: false
 ---
 
 <!--
@@ -38,28 +39,25 @@ SOFTWARE.
   />
   <deck-pile
     :deck
-    />
+  />
 </main>
 
 
 
 <script lang="ts" setup>
-import GameBoard from './tttr-board.vue'
-import DeckPile from './tttr-deck.vue'
-import GameStatus from './tttr-status.vue'
-
 import { ref } from 'vue'
 import { useStorage } from '@vueuse/core'
 import { useCardBoard } from './cardboard.ts'
 import { useDeck } from './cards-xo'
 
-const history = useStorage('history', {
-  outcomes: []
-})
+import GameBoard from './tttr-board.vue'
+import DeckPile from './tttr-deck.vue'
+import GameStatus from './tttr-status.vue'
 
 const statusMsg = ref('')
+const simplified = ref(false)
 const board = useCardBoard()
-const deck = useDeck(9)
+const deck = useDeck(simplified ? 9 : 10)
 
 // TODO game history, event handling, state updates
 </script>
