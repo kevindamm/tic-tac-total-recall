@@ -3,5 +3,3 @@ declare module '*.vue' {
   const component: DefineComponent<object, object, any>
   export default component
 }
-
-declare module 'vitepress/dist/client/theme-default/composables/nav.js'
