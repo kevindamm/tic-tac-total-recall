@@ -2,6 +2,9 @@
 title: Play Tic-Tac-TOTAL-RECALL
 author: Kevin Damm
 navbar: false
+sidebar: false
+aside: false
+outline: false
 ---
 
 <!--
@@ -64,6 +67,8 @@ const deck = useDeck(simplified ? 9 : 10)
 
 
 
-<style module>
-
+<style>
+.container {
+  justify-items: center;
+}
 </style>

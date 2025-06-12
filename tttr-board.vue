@@ -39,9 +39,15 @@ SOFTWARE.
 <script lang="ts" setup>
 import BoardPosition from './tttr-cell.vue'
 import { CardBoard3x3 } from './cardboard'
+import { type Deck } from './cards-xo'
 
 const { board } = defineProps<{
   board: CardBoard3x3
+}>()
+
+const emit = defineEmits<{
+  deal: [i: number, j: number, deck: Deck]
+  filled: []
 }>()
 
 function handleSelect() {
@@ -60,10 +66,5 @@ function handleSelect() {
   grid-template-columns: repeat(3, var(--cell-width));
   grid-template-rows: repeat(3, var(--cell-width));
   gap: 1svmin;
-}
-
-.board-grid * {
-  background-color: magenta;
-  opacity: 0.5;
 }
 </style>

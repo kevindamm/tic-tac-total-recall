@@ -15,18 +15,17 @@ hero:
 features:
   - title: Equipment
     details: one (1) classic Tic-Tac-Toe board and a deck of ten (10) cards,
-             consisting of five (5) "X" cards and five (5) "O" cards;
+             consisting of five (5) "X" cards and five (5) "O" cards; <hr>
              during play, all cards but one are dealt, then the last card is
              dealt to the player
   - title: Gameplay
     details: choose where on the grid to deal the cards face-down,
-             finally seeing which card remains and choosing whether to deal it face-up
-              or discard it; <br>
+             finally seeing which card remains and choosing to deal or discard it; <hr>
              cards are then revealed <br> (edges -> corners -> center) with bidding between reveals
   - title: Winning Conditions
-    details: the player's goal is to get a line or two of their symbol, without
-             completing a line of the opposite symbol; the player's symbol is
-             the one in the majority, or the one opposite that of the final card
+    details: the player's goal is to get a line of three in a row of their symbol,
+             without completing a line of the opposite symbol; <hr> the player's symbol
+             is the one in the majority, also the one not seen on the final card
 ---
 
 <!--
@@ -52,12 +51,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 -->
 
-<hr class="hr-spacer" />
-
 <!--@include: ./rules.md-->
 
 <style>
-.hr-spacer {
-  padding-top: 2em;
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #424969;
+  background-color: unset;
+}
+
+h1:not(.heading) {
+  padding-top: 1em;
+  margin-top: 2em;
+  border-top: 1px solid #424969;
 }
 </style>

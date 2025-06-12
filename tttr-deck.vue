@@ -27,12 +27,20 @@ SOFTWARE.
       class="deck-pile"
       src="/img/card-back.png"
       @click="$emit('draw', deck)"
-      />
+      @dragstart="isDragging = true;"
+      @dragend="isDragging = false;"
+    />
+    <img v-else
+      class="deck-empty"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue'
 import { Deck } from './cards-xo'
+
+const isDragging = ref(false)
 
 const { deck } = defineProps<{
   deck: Deck
@@ -45,7 +53,10 @@ const emit = defineEmits<{
 
 <style>
 .deck-pile {
-  width: 3.5em;
-  height: 5em;
+  /* padding: 3em 0 0 3em; */
+  width: 5em;
+  height: 7em;
+
+
 }
 </style>

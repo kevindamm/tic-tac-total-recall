@@ -23,8 +23,14 @@ SOFTWARE.
 
 <template>
   <div
-    draggable="true"
-    :class="['grid-cell', `cell_${row}_${col}`]"
+    :draggable
+    :class="['grid-cell', `cell_${row}_${col}`, `${highlit ? 'highlit' : ''}`]"
+    @dragenter="highlit=true"
+    @dragleave="highlit=false"
+    @dragend="highlit=false"
+    @dragover.prevent=""
+    @drop.prevent="() => { highlit=false; $emit('select', row, col) }"
+    @click="$emit('select', row, col)"
     >
     {{ row }}, {{ col }}
     <p>{{ card.card }}</p>
@@ -32,9 +38,9 @@ SOFTWARE.
 </template>
 
 
-
 <script lang="ts" setup>
-import { Empty, CardSurface, Deck } from './cards-xo' 
+import { computed, ref } from 'vue'
+import { CardSurface, Empty } from './cards-xo' 
 
 const { row, col, card = Empty } = defineProps<{
   row: number
@@ -42,10 +48,11 @@ const { row, col, card = Empty } = defineProps<{
   card?: CardSurface
 }>()
 
+const highlit = ref(false)
+const draggable = computed(() => card?.card !== undefined )
+
 const emit = defineEmits<{
   select: [i: number, j: number]
-  deal: [i: number, j: number, deck: Deck]
-  filled: []
   reveal: [selected: number[]]
 }>()
 
@@ -100,3 +107,10 @@ protocol, it belongs in more general abstraction and not in this toy.
 */
 </script>
 
+
+<style>
+.highlit {
+  background-color: magenta;
+  opacity: 0.5;
+}
+</style>
