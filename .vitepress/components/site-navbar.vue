@@ -1,28 +1,69 @@
 <script lang="ts" setup>
 import { useData } from 'vitepress';
-import VPNavBarMenuLink from 'vitepress/dist/client/theme-default/components/VPNavBarMenuLink.vue';
-import VPNavBarMenuGroup from 'vitepress/dist/client/theme-default/components/VPNavBarMenuGroup.vue';
-import { useNav } from 'vitepress/dist/client/theme-default/composables/nav.js';
-import { onMounted, ref } from 'vue'
+import { ref, watchPostEffect } from 'vue'
+import { useWindowScroll } from '@vueuse/core'
 
-const { theme } = useData();
+import VPNavBarAppearance from 'vitepress/dist/client/theme-default/components/VPNavBarAppearance.vue'
+import VPNavBarExtra from 'vitepress/dist/client/theme-default/components/VPNavBarExtra.vue'
+import VPNavBarHamburger from 'vitepress/dist/client/theme-default/components/VPNavBarHamburger.vue'
+import VPNavBarMenu from 'vitepress/dist/client/theme-default/components/VPNavBarMenu.vue'
+import VPNavBarSearch from 'vitepress/dist/client/theme-default/components/VPNavBarSearch.vue'
+import VPNavBarSocialLinks from 'vitepress/dist/client/theme-default/components/VPNavBarSocialLinks.vue'
+import VPNavBarTitle from 'vitepress/dist/client/theme-default/components/VPNavBarTitle.vue'
+import VPNavBarTranslations from 'vitepress/dist/client/theme-default/components/VPNavBarTranslations.vue'
 
-const versionList = ref([])
-const { openScreen } = useNav()
-onMounted(() => {
-  openScreen()
+const { theme, isDark } = useData()
+const { y } = useWindowScroll()
+
+const props = defineProps<{
+  isScreenOpen: boolean
+}>()
+
+defineEmits<{
+  (e: 'toggle-screen'): void
+}>()
+
+const classes = ref<Record<string, boolean>>({})
+
+watchPostEffect(() => {
+  classes.value = {
+    'top': y.value === 0,
+    'screen-open': props.isScreenOpen
+  }
 })
 </script>
 
 <template>
-    <nav v-if="theme.nav" aria-labelledby="main-nav-aria-label" class="VPNavBarMenu">
-        <span id="main-nav-aria-label" class="visually-hidden">Main Navigation</span>
-        <template v-for="item in theme.nav" :key="item.text">
-            <VPNavBarMenuLink v-if="'link' in item" :item="item" />
-            <VPNavBarMenuGroup v-else :item="item" />
-        </template>
-        
-    </nav>
+  <div class="VPNavBar" :class="classes">
+    <div class="wrapper">
+      <div class="container">
+        <div class="title">
+          <VPNavBarTitle>
+            <template #nav-bar-title-before><slot name="nav-bar-title-before" /></template>
+            <template #nav-bar-title-after><slot name="nav-bar-title-after" /></template>
+          </VPNavBarTitle>
+        </div>
+
+        <div class="content">
+          <div class="content-body">
+            <slot name="nav-bar-content-before" />
+            <VPNavBarSearch class="search" />
+            <VPNavBarMenu class="menu" />
+            <VPNavBarTranslations class="translations" />
+            <VPNavBarAppearance class="appearance" />
+            <VPNavBarSocialLinks class="social-links" />
+            <VPNavBarExtra class="extra" />
+            <slot name="nav-bar-content-after" />
+            <VPNavBarHamburger class="hamburger" :active="isScreenOpen" @click="$emit('toggle-screen')" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider">
+      <div class="divider-line" />
+    </div>
+  </div>
 </template>
 
 <style scoped>
