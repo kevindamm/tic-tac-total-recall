@@ -16,5 +16,5 @@ export default defineConfig({
     socialLinks: [
       { icon: 'github', link: 'https://github.com/kevindamm/tic-tac-total-recall' }
     ]
-  }
+  },
 })
