@@ -2,5 +2,6 @@
   "include": [
     "**/*.vue",
     "**/*.ts",
-  ]
+  ],
+  "exclude": ["node_modules"]
 }
