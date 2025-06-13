@@ -32,17 +32,21 @@ SOFTWARE.
 
 <main class="container">
   <game-status
-    :statusMsg
+    :message
     :history
     :board
     :deck
   />
   <game-board 
     :board
+    @select="handleSelect"
   />
-  <deck-pile
-    :deck
-  />
+  <div class="cards">
+    <game-deck
+      :deck
+    />
+    <div class="card-surface"></div>
+  </div>
 </main>
 
 
@@ -54,14 +58,23 @@ import { useCardBoard } from './cardboard.ts'
 import { useDeck } from './cards-xo'
 
 import GameBoard from './tttr-board.vue'
-import DeckPile from './tttr-deck.vue'
+import GameDeck from './tttr-deck.vue'
+import GameCard from './tttr-card.vue'
 import GameStatus from './tttr-status.vue'
 
-const statusMsg = ref('')
 const simplified = ref(false)
+
+const message = ref('')
+const history = ref<GameOutcome>([])
 const board = useCardBoard()
 const deck = useDeck(simplified ? 9 : 10)
 
+function handleSelect(i: number, j: number) {
+  alert(`select ${i} ${j}`)
+  if (legal(['select', i, j])) {
+    // ...
+  }
+}
 // TODO game history, event handling, state updates
 </script>
 

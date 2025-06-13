@@ -16,8 +16,8 @@ features:
   - title: Equipment
     details: one (1) classic Tic-Tac-Toe board and a deck of ten (10) cards,
              consisting of five (5) "X" cards and five (5) "O" cards; <hr>
-             during play, all cards but one are dealt, then the last card is
-             dealt to the player
+             during play, all cards but one are dealt, then the last card is 
+             dealt to the player's hand
   - title: Gameplay
     details: choose where on the grid to deal the cards face-down,
              finally seeing which card remains and choosing to deal or discard it; <hr>
@@ -50,6 +50,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 -->
+
+<dark-mode-switch />
 
 <!--@include: ./rules.md-->
 

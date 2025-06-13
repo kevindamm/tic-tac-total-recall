@@ -23,24 +23,26 @@ SOFTWARE.
 
 <template>
   <div
-    :draggable
     :class="['grid-cell', `cell_${row}_${col}`, `${highlit ? 'highlit' : ''}`]"
-    @dragenter="highlit=true"
-    @dragleave="highlit=false"
-    @dragend="highlit=false"
+    @dragenter="highlit = !card.card"
+    @dragleave="highlit = false"
+    @dragend="highlit = false"
     @dragover.prevent=""
-    @drop.prevent="() => { highlit=false; $emit('select', row, col) }"
+    @drop.prevent="dropCard"
     @click="$emit('select', row, col)"
     >
-    {{ row }}, {{ col }}
-    <p>{{ card.card }}</p>
+    <game-card 
+      :draggable
+      :card
+    />
   </div>
 </template>
 
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
-import { CardSurface, Empty } from './cards-xo' 
+import GameCard from './tttr-card.vue'
+import { CardSurface, Empty } from './cards-xo'
 
 const { row, col, card = Empty } = defineProps<{
   row: number
@@ -57,6 +59,10 @@ const emit = defineEmits<{
 }>()
 
 
+function dropCard() {
+  highlit.value=false;
+  emit('select', row, col)
+}
 
 
 /*

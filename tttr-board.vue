@@ -24,11 +24,11 @@ SOFTWARE.
 <template>
   <div class="board-grid">
     <template v-for="row of 3">
-      <board-position v-for="col of 3"
+      <board-cell v-for="col of 3"
         :row :col
         :key="`cell_${row}_${col}`"
         :card="board.at(row, col)"
-        @select="handleSelect"
+        @select="select"
         />
     </template>
   </div>
@@ -37,21 +37,21 @@ SOFTWARE.
 
 
 <script lang="ts" setup>
-import BoardPosition from './tttr-cell.vue'
+import BoardCell from './tttr-cell.vue'
 import { CardBoard3x3 } from './cardboard'
-import { type Deck } from './cards-xo'
 
 const { board } = defineProps<{
   board: CardBoard3x3
 }>()
 
 const emit = defineEmits<{
-  deal: [i: number, j: number, deck: Deck]
-  filled: []
+  'deal-card': [i: number, j: number]
+  'move-card': [_i: number, _j: number, i_: number, j_: number]
+  'filled': []
 }>()
 
-function handleSelect() {
-  // TODO
+function select(i: number, j: number): void {
+  emit('deal-card', i, j)
 }
 </script>
 

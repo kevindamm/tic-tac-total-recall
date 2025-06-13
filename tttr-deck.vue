@@ -56,7 +56,10 @@ const emit = defineEmits<{
   /* padding: 3em 0 0 3em; */
   width: 5em;
   height: 7em;
+}
 
-
+.deck-empty {
+  border: darkgrey dashed 2px;
+  border-radius: 3em;
 }
 </style>
