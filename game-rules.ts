@@ -21,38 +21,29 @@
 // 
 // github:KevinDamm/tic-tac-total-recall/game-outcome.ts
 
-import { CardFront, Deck } from './cards-xo'
-import { CardBoard3x3, BoardCoord } from './cardboard'
+import { CardSurface, Deck, useDeck } from './cards-xo'
+import { CardBoard3x3, BoardCoord, useCardBoard } from './cardboard'
 
+// useGameRules() composable interface
+export interface GameRules {
+  init(): GameState
+  actions(state: GameState): Action[]
+  legal(state: GameState, action: Action): boolean
+  next(state: GameState, turn: Action[]): GameState
+  terminal(state: GameState, action?: Action): boolean
+  goal(state: GameState): boolean
+}
 
 export interface PlayerRole {
   username: string
   showname: string
-  rolename: string
+  rolename: 'X' | 'O' | 'solo' | undefined
 }
 
 export interface GameState {
   board: CardBoard3x3
   deck: Deck
   history: Action[]
-}
-
-export interface GameRules {
-  roles(): (PlayerRole | undefined)[]
-  init(): GameState
-  actions(state: GameState): Action[]
-  legal(state: GameState, action: Action): boolean
-  next(state: GameState, turn: Action[]): GameState
-  terminal(state: GameState): boolean
-  goal(state: GameState): boolean
-}
-
-export interface GameOutcome {
-  endgame: GameState
-  outcome:
-    | { type: 'win', lines: number[] }
-    | { type: 'loss', line: number[] }
-    | { type: 'unk' }
 }
 
 export type Action =
@@ -83,32 +74,35 @@ export type Action =
 // & equipment (and rules with randomness) semantics.  Heavily inspired by GDL.
 export function useGameRules(): GameRules {
 
-  function roles(): (PlayerRole | undefined)[] {
-    // TODO
-    return []
-  }
-
+  // Returns a new GameState instance, initialized to a match beginning.
   function init(): GameState {
-    // TODO
-    return
+    return {
+      board: useCardBoard(),
+      deck: useDeck(),
+      history: [] as Action[],
+    }
   }
 
+  // Returns a list of the allowed actions for a given game state.
   function actions(state: GameState): Action[] {
     // TODO
     return
   }
 
+  // Returns true if the action is allowed at the given game state.
   function legal(state: GameState, action: Action): boolean {
     // TODO
     return true
   }
   
+  // Transform a game state with one or more (simultaneous) actions.
   function next(state: GameState, turn: Action[]): GameState {
     // TODO
     return
   }
   
-  function terminal(state: GameState): boolean {
+  // Returns true if the 
+  function terminal(state: GameState, action?: Action): boolean {
     // TODO
     return false
   }
@@ -120,7 +114,6 @@ export function useGameRules(): GameRules {
   }
 
   return {
-    roles,
     init,
     actions,
     legal,
@@ -128,4 +121,13 @@ export function useGameRules(): GameRules {
     terminal,
     goal,
   }
+}
+
+// Summarize a game outcome
+export interface GameOutcome {
+  endgame: CardSurface[]
+  outcome:
+    | { type: 'win', focus: number[] }
+    | { type: 'loss', focus: number[] }
+    | { type: 'unk' }
 }

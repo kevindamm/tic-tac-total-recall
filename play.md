@@ -33,17 +33,17 @@ SOFTWARE.
 <main class="container">
   <game-status
     :message
-    :history
-    :board
-    :deck
+    :history="game.history"
+    :board="game.board"
+    :deck="game.deck"
   />
   <game-board 
-    :board
+    :board="game.board"
     @deal-card="deal"
   />
   <div class="cards">
     <game-deck
-      :deck
+      :deck="game.deck"
     />
     <div class="card-surface"></div>
   </div>
@@ -54,10 +54,7 @@ SOFTWARE.
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { useStorage } from '@vueuse/core'
-
-import { useCardBoard } from './cardboard.ts'
-import { useDeck } from './cards-xo'
-import { legal } from './game-rules'
+import { useGameRules } from './game-rules'
 
 import GameBoard from './tttr-board.vue'
 import GameDeck from './tttr-deck.vue'
@@ -67,9 +64,8 @@ import GameStatus from './tttr-status.vue'
 const simplified = ref(false)
 
 const message = ref('')
-const history = ref<GameOutcome>([])
-const board = useCardBoard()
-const deck = useDeck(simplified ? 9 : 10)
+const rules = useGameRules()
+const game = rules.init()
 
 function deal(row: number, col: number) {
   if (legal(['select', row, col])) {
