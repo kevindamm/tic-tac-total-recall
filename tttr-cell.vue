@@ -23,13 +23,14 @@ SOFTWARE.
 
 <template>
   <div
-    :class="['grid-cell', `cell_${row}_${col}`, `${highlit ? 'highlit' : ''}`]"
+    class="grid-cell"
+    :class="[`cell_${row}_${col}`, `${highlit ? 'highlit' : ''}`]"
     @dragenter="highlit = !card.card"
     @dragleave="highlit = false"
     @dragend="highlit = false"
     @dragover.prevent=""
     @drop.prevent="dropCard"
-    @click="$emit('select', row, col)"
+    @click="$emit('select-cell', row, col)"
     >
     <game-card 
       :draggable
@@ -51,17 +52,17 @@ const { row, col, card = Empty } = defineProps<{
 }>()
 
 const highlit = ref(false)
-const draggable = computed(() => card?.card !== undefined )
+const draggable = computed(() => !!card?.card )
 
 const emit = defineEmits<{
-  select: [i: number, j: number]
-  reveal: [selected: number[]]
+  'select-cell': [i: number, j: number]
+  'reveal': [selected: number[]]
 }>()
 
 
 function dropCard() {
-  highlit.value=false;
-  emit('select', row, col)
+  highlit.value = false
+  emit('select-cell', row, col)
 }
 
 

@@ -27,8 +27,8 @@ SOFTWARE.
       <board-cell v-for="col of 3"
         :row :col
         :key="`cell_${row}_${col}`"
-        :card="board.at(row, col)"
-        @select="select"
+        :card="board.at({row, col})"
+        @select-cell="selection(row, col)"
         />
     </template>
   </div>
@@ -50,7 +50,7 @@ const emit = defineEmits<{
   'filled': []
 }>()
 
-function select(i: number, j: number): void {
+function selection(i: number, j: number): void {
   emit('deal-card', i, j)
 }
 </script>

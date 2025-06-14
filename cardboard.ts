@@ -21,26 +21,31 @@
 // 
 // github:KevinDamm/tic-tac-total-recall/cardboard.ts
 
-import { ref, type Ref } from 'vue'
+import { ref } from 'vue'
 import { CardFront, CardSurface, Empty, Deck } from './cards-xo'
 
-type CellGroup = 'all' | 'edges' | 'corners' | 'center' | number[]
+export type CellGroup = 'all' | 'edges' | 'corners' | 'center' | number[]
+
+export interface BoardCoord {
+  row: number
+  col: number
+}
 
 export interface CardBoard3x3 {
   // getters
   open(): boolean
-  at(row: number, col: number): CardSurface
+  at(coord: BoardCoord): CardSurface
   line(card: CardFront): boolean
   countLines(): number
 
   // actions
-  deal(row: number, col: number, deck: Deck): void
+  deal(coord: BoardCoord, deck: Deck): void
   turn(selection: CellGroup): void
   reset(): void
 }
 
 // Composable for representing the state and logic of an <M,N,K> board.
-export function useCardBoard(clone?: (i: number, j: number) => CardSurface): CardBoard3x3 {
+export function useCardBoard(clone?: (coord: BoardCoord) => CardSurface): CardBoard3x3 {
   const board = ref<CardSurface[][]>(
     new Array(3).map(() => new Array(3).map(() => Empty)))
 
@@ -49,7 +54,7 @@ export function useCardBoard(clone?: (i: number, j: number) => CardSurface): Car
       for (let col of [0, 1, 2]) {
         board.value = Array(3).map(
           (row) => Array(3).map(
-            (col) => clone(row, col)))
+            (col) => clone({row, col})))
       }
     }
   }
@@ -66,9 +71,13 @@ export function useCardBoard(clone?: (i: number, j: number) => CardSurface): Car
   }
   
   // Returns the representation of the board cell at position (row, col)
-  function at(row: number, col: number): CardSurface {
-    if (row in board.value && col in board.value[row]) {
-      return board.value[row][col]
+  function at(coord: BoardCoord): CardSurface {
+    let row = coord.row-1
+    if (row in board.value) {
+      let col = coord.col-1
+      if (col in board.value[row]) {
+        return board.value[row][col]
+      }
     }
     return Empty
   }
@@ -169,8 +178,9 @@ export function useCardBoard(clone?: (i: number, j: number) => CardSurface): Car
   }
 
   // Deal the top card of the deck onto the position at (row, col)
-  function deal(row: number, col: number, deck: Deck) {
-    board.value[row][col] = {
+  function deal(coord: BoardCoord, deck: Deck) {
+    if ((coord.row-1) in board.value && (coord.col-1) in board.value[coord.row-1])
+    board.value[coord.row-1][coord.col-1] = {
       type: 'FaceDown',
       card: deck.draw(),
     }
