@@ -54,17 +54,21 @@ SOFTWARE.
 <!--@include: ./rules.md-->
 
 <style>
+:root {
+  --subtle-blue: #424969;
+}
+
 hr {
   display: block;
   height: 1px;
   border: 0;
-  border-top: 1px solid #424969;
+  border-top: 1px solid var(--subtle-blue);
   background-color: unset;
 }
 
 h1:not(.heading) {
   padding-top: 1em;
   margin-top: 2em;
-  border-top: 1px solid #424969;
+  border-top: 1px solid var(--subtle-blue);
 }
 </style>

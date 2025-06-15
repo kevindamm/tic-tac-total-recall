@@ -37,16 +37,20 @@ SOFTWARE.
     :board="game.board"
     :deck="game.deck"
   />
-  <game-board 
-    :board="game.board"
-    @deal-card="deal"
-  />
-  <div class="cards">
-    <game-deck
-      :deck="game.deck"
+  <template v-if="game.phase === 'dealing'">
+    <game-board 
+      :board="game.board"
+      @deal-card="deal"
     />
-    <div class="card-surface"></div>
-  </div>
+    <div class="cards">
+      <game-deck
+        :deck="game.deck"
+      />
+      <game-hand 
+        :card="game.hand"
+      />
+    </div>
+  </template>
 </main>
 
 
@@ -57,8 +61,9 @@ import { useStorage } from '@vueuse/core'
 import { useGameRules } from './game-rules'
 
 import GameBoard from './tttr-board.vue'
-import GameDeck from './tttr-deck.vue'
 import GameCard from './tttr-card.vue'
+import GameDeck from './tttr-deck.vue'
+import GameHand from './tttr-hand.vue'
 import GameStatus from './tttr-status.vue'
 
 const simplified = ref(false)
@@ -67,14 +72,16 @@ const message = ref('')
 const rules = useGameRules()
 const game = rules.init()
 
+onMounted(() => {
+  game.phase = 'dealing'
+})
+
 function deal(row: number, col: number) {
-  if (legal(['select', row, col])) {
+  if (rules.legal(game, {type: 'deal', })) {
     // ...
   }
 }
-// TODO game history, event handling, state updates
 </script>
-
 
 
 <style>

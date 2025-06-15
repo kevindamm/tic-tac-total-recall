@@ -21,37 +21,39 @@
 // 
 // github:KevinDamm/tic-tac-total-recall/cardboard.ts
 
-import { ref } from 'vue'
-import { CardFront, CardSurface, Empty, Deck } from './cards-xo'
-
-export type CellGroup = 'all' | 'edges' | 'corners' | 'center' | number[]
+import { computed, type ComputedRef, ref, toValue } from 'vue'
+import { CardFront, CardSurface, Empty, Deck } from './deck-xo'
 
 export interface BoardCoord {
   row: number
   col: number
 }
 
+export type CellGroup = 'all' | 'edges' | 'corners' | 'center' | BoardCoord[]
+
 export interface CardBoard3x3 {
+  open: ComputedRef<BoardCoord[]>
+  cells: ComputedRef<CardSurface[]>
+  lineX: ComputedRef<boolean>
+  lineO: ComputedRef<boolean>
+
   // getters
-  open(): boolean
   at(coord: BoardCoord): CardSurface
-  line(card: CardFront): boolean
-  countLines(): number
 
   // actions
   deal(coord: BoardCoord, deck: Deck): void
-  turn(selection: CellGroup): void
+  reveal(selection: CellGroup): void
   reset(): void
 }
 
 // Composable for representing the state and logic of an <M,N,K> board.
-export function useCardBoard(clone?: (coord: BoardCoord) => CardSurface): CardBoard3x3 {
+export function useCardBoard3x3(clone?: (coord: BoardCoord) => CardSurface): CardBoard3x3 {
   const board = ref<CardSurface[][]>(
     new Array(3).map(() => new Array(3).map(() => Empty)))
 
   if (clone) {
-    for (let row of [0, 1, 2]) {
-      for (let col of [0, 1, 2]) {
+    for (let row of [1, 2, 3]) {
+      for (let col of [1, 2, 3]) {
         board.value = Array(3).map(
           (row) => Array(3).map(
             (col) => clone({row, col})))
@@ -59,16 +61,22 @@ export function useCardBoard(clone?: (coord: BoardCoord) => CardSurface): CardBo
     }
   }
 
-  function open(): boolean {
-    for (let row of [0, 1, 2]) {
-      for (let col of [0, 1, 2]) {
-        if (board.value[row][col].type === Empty.type) {
-          return true
+  const open = computed(() => {
+    let cells = [] as BoardCoord[]
+    for (let row of [1, 2, 3]) {
+      for (let col of [1, 2, 3]) {
+        if (at({row, col}).type === 'Empty') {
+          cells.push({row, col})
         }
       }
     }
-    return false
-  }
+    return cells
+  })
+
+  const cells = computed(() => [
+    ...board.value[0],
+    ...board.value[1],
+    ...board.value[2]])
   
   // Returns the representation of the board cell at position (row, col)
   function at(coord: BoardCoord): CardSurface {
@@ -82,100 +90,61 @@ export function useCardBoard(clone?: (coord: BoardCoord) => CardSurface): CardBo
     return Empty
   }
 
-  // Returns the number of complete three-aligned cards on the board, regardless
-  // of the symbol on the card making up the line.  May be 0 or 1, sometimes 2.
-  // This will only return three or more if the deck has more than 10 cards.
-  function countLines(): number {
-    let count = 0
-    
-    // any row
-    for (var row of [0, 1, 2]) {
-      if (board.value[row][0].type == 'FaceUp' &&
-          board.value[row][1].type == 'FaceUp' &&
-          board.value[row][2].type == 'FaceUp' &&
-          board.value[row][0].card === board.value[row][1].card &&
-          board.value[row][1].card === board.value[row][2].card) {
-        count += 1
-      }
-    }
-
-    // any col
-    for (var col of [0, 1, 2]) {
-      if (board.value[0][col].type == 'FaceUp' &&
-          board.value[1][col].type == 'FaceUp' &&
-          board.value[2][col].type == 'FaceUp' &&
-          board.value[0][col].card === board.value[1][col].card &&
-          board.value[1][col].card === board.value[2][col].card) {
-        count += 1
-      }
-    }
-
-    // backslash diagonal
-    if (board.value[0][0].type == 'FaceUp' &&
-        board.value[1][1].type == 'FaceUp' &&
-        board.value[2][2].type == 'FaceUp' &&
-        board.value[0][0].card === board.value[1][1].card &&
-        board.value[1][1].card === board.value[2][2].card) {
-      count += 1
-    }
-
-    // forward-slash diagonal
-    if (board.value[0][2].type == 'FaceUp' &&
-        board.value[1][1].type == 'FaceUp' &&
-        board.value[2][0].type == 'FaceUp' &&
-        board.value[0][2].card === board.value[1][1].card &&
-        board.value[1][1].card === board.value[2][0].card) {
-      count += 1
-    }
-
-    return count
-  }
-
   // Returns whether the card value makes an aligned set of three
   // anywhere on the board.
-  function line(card: CardFront): boolean {
-    for (var row of [0, 1, 2]) {
-      if (board.value[row][0].type == 'FaceUp' &&
-          board.value[row][1].type == 'FaceUp' &&
-          board.value[row][2].type == 'FaceUp' &&
-          board.value[row][0].card === card &&
-          board.value[row][1].card === card &&
-          board.value[row][2].card === card) {
+  const lineX = computed(() => {
+    for (let row of [0, 1, 2]) {
+      if (board.value[row][0].card === 'X' &&
+          board.value[row][1].card === 'X' &&
+          board.value[row][2].card === 'X')
         return true
-      }
     }
-
     for (var col of [0, 1, 2]) {
-      if (board.value[0][col].type == 'FaceUp' &&
-          board.value[1][col].type == 'FaceUp' &&
-          board.value[2][col].type == 'FaceUp' &&
-          board.value[0][col].card === card &&
-          board.value[1][col].card === card &&
-          board.value[2][col].card === card) {
+      if (board.value[0][col].card === 'X' &&
+          board.value[1][col].card === 'X' &&
+          board.value[2][col].card === 'X')
         return true
-      }
     }
-
-    if (board.value[0][0].type == 'FaceUp' &&
-        board.value[1][1].type == 'FaceUp' &&
-        board.value[2][2].type == 'FaceUp' &&
-        board.value[0][0].card === card &&
-        board.value[1][1].card === card &&
-        board.value[2][2].card === card) {
+    if (board.value[0][0].card === 'X' &&
+        board.value[1][1].card === 'X' &&
+        board.value[2][2].card === 'X') {
       return true
     }
-
-    if (board.value[0][2].type == 'FaceUp' &&
-        board.value[1][1].type == 'FaceUp' &&
-        board.value[2][0].type == 'FaceUp' &&
-        board.value[0][2].card === card &&
-        board.value[1][1].card === card &&
-        board.value[2][0].card === card) {
+    if (board.value[0][2].card === 'X' &&
+        board.value[1][1].card === 'X' &&
+        board.value[2][0].card === 'X') {
       return true
     }
 
     return false
-  }
+  })
+
+  const lineO = computed(() => {
+    for (let row of [0, 1, 2]) {
+      if (board.value[row][0].card === 'O' &&
+          board.value[row][1].card === 'O' &&
+          board.value[row][2].card === 'O')
+        return true
+    }
+    for (var col of [0, 1, 2]) {
+      if (board.value[0][col].card === 'O' &&
+          board.value[1][col].card === 'O' &&
+          board.value[2][col].card === 'O')
+        return true
+    }
+    if (board.value[0][0].card === 'O' &&
+        board.value[1][1].card === 'O' &&
+        board.value[2][2].card === 'O') {
+      return true
+    }
+    if (board.value[0][2].card === 'O' &&
+        board.value[1][1].card === 'O' &&
+        board.value[2][0].card === 'O') {
+      return true
+    }
+
+    return false
+  })
 
   // Deal the top card of the deck onto the position at (row, col)
   function deal(coord: BoardCoord, deck: Deck) {
@@ -187,14 +156,14 @@ export function useCardBoard(clone?: (coord: BoardCoord) => CardSurface): CardBo
   }
 
   // Turn over the cards that match the selection indicated.
-  function turn(selection: CellGroup) {
+  function reveal(selection: CellGroup) {
     switch (selection) {
       case 'all':
         // Turn over all the cards
-        for (var row in board) {
-          for (var col in board[row]) {
-            if (board[row][col].type === 'FaceDown') {
-              board[row][col] = board[row][col].flip()
+        for (var row in board.value) {
+          for (var col in board.value[row]) {
+            if (board.value[row][col].type === 'FaceDown') {
+              board.value[row][col] = board.value[row][col].flip()
             }
           }
         }
@@ -208,8 +177,8 @@ export function useCardBoard(clone?: (coord: BoardCoord) => CardSurface): CardBo
         ]) {
           let row = coord.row
           let col = coord.col
-          if (board[row][col].type === 'FaceDown') {
-            board[row][col] = board[row][col].flip()
+          if (board.value[row][col].type === 'FaceDown') {
+            board.value[row][col] = board.value[row][col].flip()
           }
         }
 
@@ -222,36 +191,39 @@ export function useCardBoard(clone?: (coord: BoardCoord) => CardSurface): CardBo
         ]) {
           let row = coord.row
           let col = coord.col
-          if (board[row][col].type === 'FaceDown') {
-            board[row][col] = board[row][col].flip()
+          if (board.value[row][col].type === 'FaceDown') {
+            board.value[row][col] = board.value[row][col].flip()
           }
         }
 
       case 'center':
-        if (board[1][1].type === 'FaceDown') {
-          board[1][1] = board[1][1].flip()
+        if (board.value[1][1].type === 'FaceDown') {
+          board.value[1][1] = board.value[1][1].flip()
         }
     }
   }
 
   // Clears the state of the board, removing cards from every position.
   function reset(): void {
-    for (var row in board) {
-      for (var col in board[row]) {
-        board[row][col] = Empty
+    for (var row in board.value) {
+      for (var col in board.value[row]) {
+        board.value[row][col] = Empty
       }
     }
   }
 
   return {
-    // getters
     open,
+    cells,
+    lineX,
+    lineO,
+
+    // getters
     at,
-    line,
-    countLines,
+
     // actions
     deal,
-    turn,
+    reveal,
     reset,
   }
 }
