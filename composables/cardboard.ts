@@ -22,7 +22,7 @@
 // github:KevinDamm/tic-tac-total-recall/cardboard.ts
 
 import { computed, type ComputedRef, ref, toValue } from 'vue'
-import { CardFront, CardSurface, Empty, Deck } from './deck-xo'
+import { CardFront, CardSurface, Empty, Deck } from '../composables/deck-xo'
 
 export interface BoardCoord {
   row: number

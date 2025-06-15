@@ -38,7 +38,7 @@ SOFTWARE.
 
 <script lang="ts" setup>
 import BoardCell from './tttr-cell.vue'
-import { CardBoard3x3 } from './cardboard'
+import { CardBoard3x3 } from '../composables/cardboard'
 
 const { board } = defineProps<{
   board: CardBoard3x3

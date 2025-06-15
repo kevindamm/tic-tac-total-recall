@@ -56,15 +56,15 @@ SOFTWARE.
 
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useStorage } from '@vueuse/core'
-import { useGameRules } from './game-rules'
+import { useGameRules } from './composables/game-rules'
 
-import GameBoard from './tttr-board.vue'
-import GameCard from './tttr-card.vue'
-import GameDeck from './tttr-deck.vue'
-import GameHand from './tttr-hand.vue'
-import GameStatus from './tttr-status.vue'
+import GameBoard from './components/tttr-board.vue'
+import GameCard from './components/tttr-card.vue'
+import GameDeck from './components/tttr-deck.vue'
+import GameHand from './components/tttr-hand.vue'
+import GameStatus from './components/tttr-status.vue'
 
 const simplified = ref(false)
 

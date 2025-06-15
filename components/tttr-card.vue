@@ -17,7 +17,7 @@
 
 
 <script lang="ts" setup>
-import { CardSurface, Empty } from './deck-xo';
+import { CardSurface, Empty } from '../composables/deck-xo';
 
 const { card = Empty } = defineProps<{
   card: CardSurface
