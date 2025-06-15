@@ -38,7 +38,7 @@ SOFTWARE.
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { Deck } from './cards-xo'
+import { Deck } from './deck-xo'
 
 const isDragging = ref(false)
 

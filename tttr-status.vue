@@ -13,7 +13,7 @@
 
 <script lang="ts" setup>
 import { CardBoard3x3 } from './cardboard';
-import { Deck } from './cards-xo';
+import { Deck } from './deck-xo';
 import { GameOutcome } from './game-rules';
 
 defineProps<{

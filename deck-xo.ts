@@ -19,7 +19,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 // 
-// github:KevinDamm/tic-tac-total-recall/cards-xo.ts
+// github:KevinDamm/tic-tac-total-recall/deck-xo.ts
 
 // The interface representation for the Composable in this module.
 export interface Deck {

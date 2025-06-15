@@ -43,7 +43,7 @@ SOFTWARE.
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 import GameCard from './tttr-card.vue'
-import { CardSurface, Empty } from './cards-xo'
+import { CardSurface, Empty } from './deck-xo'
 
 const { row, col, card = Empty } = defineProps<{
   row: number
