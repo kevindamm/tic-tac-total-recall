@@ -33,9 +33,7 @@ SOFTWARE.
 <main class="container">
   <game-status
     :message
-    :history="game.history"
-    :board="game.board"
-    :deck="game.deck"
+    :game
   />
   <template v-if="game.phase === 'dealing'">
     <game-board 

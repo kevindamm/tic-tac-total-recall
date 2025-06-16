@@ -12,15 +12,11 @@
 </template>
 
 <script lang="ts" setup>
-import { CardBoard3x3 } from '../composables/cardboard';
-import { Deck } from '../composables/deck-xo';
-import { GameOutcome } from '../composables/game-rules';
+import { GameState } from '../composables/game-rules'
 
 defineProps<{
   message: string
-  history: GameOutcome[]
-  board: CardBoard3x3
-  deck: Deck
+  game: GameState
 }>()
 
 defineEmits<{
