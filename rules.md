@@ -79,12 +79,21 @@ balance.  Play continues until the player decides to stop or they run out of coi
 
 ## Fairness
 
-With uniform distribution of deck arrangements and uniform distribution of cards
-being dealt, the likelihood of winning is 62:64 which is pretty close to being a
-fair outcome in the simplified game.  With the bidding game mechanic, the chances
-are a little different because the player is given incrementally more information
-while having a chance to influence their winnings or minimize their risk.  But,
-because the final card is unknown, if the final card might result in a win it is
-still exactly 50/50 whether it will.  If this is not immediately clear, play the
-game a few times to get an intuition for the odds.  If you would like to see a
-complete writeup of the probabilities involved, contact me and let me know!
+The deck is shuffled such that all card orderings are equally likely (see the
+deck composables for more details) and this will result in 62:64 odds that the
+resulting arrangement on the board will result in a win for the player,
+regardless of whether the player has any agency over where the cards are dealt.
+With the ability to place the last card on any position, the likelihood of the
+card underneath being the same symbol is 50:50 and the likelihood of winning is
+still the same either way -- the reason why is left as an exercise for the
+reader.
+
+With the bidding game mechanic added, the chances are a little different because
+the player is given incrementally more information while having some agency to
+influence their winnings or minimize their risk.  But, because the final card is
+unknown, if the final card might result in a win it is still exactly 50/50
+whether it will.
+
+If this is not immediately clear, play the game a few times to get an intuition
+for the odds.  If you would like to see a complete writeup of the probabilities
+involved, contact me and let me know!

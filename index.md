@@ -25,7 +25,7 @@ features:
   - title: Winning Conditions
     details: the player's goal is to get a line of three in a row of their symbol,
              without completing a line of the opposite symbol; <hr> the player's symbol
-             is the one in the majority, also the one not seen on the final card
+             is the one in the majority, and opposite the the symbol on the final card
 ---
 
 <!--
