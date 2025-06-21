@@ -21,118 +21,38 @@
 // 
 // github:KevinDamm/tic-tac-total-recall/deck-digits.ts
 
-// The interface representation for the Composable in this module.
-export interface Deck {
-  exhausted(): boolean
+import { useDeck, Deck, CardBack } from './deck'
 
-  reset(order?: number[]): Deck
-  shuffle(): Deck
-  draw(): CardBack
-}
-
-const DEFAULT_DECK_SIZE: number = 10
+const DEFAULT_DECK_DIGITS_SIZE: number = 10
 
 // Cards have a front and back, card front may be symbol "X" or symbol "O"
-export type CardFront = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0
+export type CardDigits = '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '0'
 
-// The card's value is opaque for the card with 
-export interface CardBack {
-  flip(): CardFront
-}
+export interface DeckDigits extends Deck<CardDigits> {}
 
-// A card's front may or may not be visible and still be a Card.
-// The card's intrinsic state doesn't change,
-// but its value is revealed only via CardFront.
-export type Card =
-    | CardBack
-    | CardFront 
 
-// A card surface maybe has a card, or it may be empty.
-export type CardSurface =
-  | { type: "FaceDown", card: CardBack }
-  | { type: "FaceUp", card: CardFront }
-  | { type: "Empty", card: undefined }
-
-// Empty representation is a singleton, (const ... as const) is intentional.
-export const Empty = { type: "Empty", card: undefined } as const
-
-// COMPOSABLE useDeck
+// COMPOSABLE useDeckDigits
 //
-// Takes an optional param `count` which can extend the number of cards in the
-// the deck, but the fairest ratio is 10 cards, with 9 cards also close, 62:64.
-//
-// To use this, follow the type protocol above for Deck and dealing CardBack
-// instances which can be flip()'ed to produce its related CardFront.  The card
-// property is hidden from view in its CardBack representation.
-export function useDeck(seed?: number | number[]): Deck {
-  var cards: number[]
-  var index = 0
+// A deck constructed from single-digit numbers, including 0.
+export function useDeckDigits(
+    count: number = DEFAULT_DECK_DIGITS_SIZE,
+    seed?: number[]): DeckDigits {
 
-  const defaultOrder = (len: number) => Array<number>(len).map((i) => i)
-  const deck = { exhausted, reset, shuffle, draw }
-
-  // Returns true if there are no more cards remaining to deal.
-  function exhausted(): boolean {
-    return (cards && length in cards && index === cards.length)
-  }
-
-  // Reset's the deck to the ordering it had when it was created, or to the
-  // default "fresh" ordering if an initial ordering (seed) wasn't provided.
-  function reset(): Deck {
-    switch (typeof seed) {
-      case 'undefined':
-        cards = defaultOrder(DEFAULT_DECK_SIZE)
-      case 'number':
-        cards = defaultOrder((seed && seed > 0) ? seed : DEFAULT_DECK_SIZE)
-      case 'object':
-        cards = (isArrayOfNumbers(seed as object) ?
-            seed as number[]
-            :
-            defaultOrder(DEFAULT_DECK_SIZE)
-        )
+  function value(index: number): CardDigits {
+    let value = index % 10
+    switch (value) {
+      case 1: return '1'
+      case 2: return '2'
+      case 3: return '3'
+      case 4: return '4'
+      case 5: return '5'
+      case 6: return '6'
+      case 7: return '7'
+      case 8: return '8'
+      case 9: return '9'
     }
-    return deck
+    return '0'
   }
 
-  // Internally used to validate the composable's paramter.
-  function isArrayOfNumbers(obj: object): boolean {
-    if (!Array.isArray(obj)) {
-      return false
-    }
-    const arr = obj as any[]
-    for (var i in arr) {
-      if (typeof arr[i] !== 'number') {
-        return false
-      }
-    }
-
-    return true
-  }
-
-  // Shuffle all of the cards in the deck, producing a new deck.
-  function shuffle(): Deck {
-    const order: number[] = Array(cards.length).map((i) => cards[i])
-    for (var from = order.length-1; from > 0; from -= 1) {
-      let into = Math.floor(Math.random() * (from+1))
-      if (into == from) {
-        continue
-      }
-      let tmp = order[into]
-      order[into] = order[from]
-      order[from] = tmp
-    }
-    return useDeck(order)
-  }
-
-  // The card being dealt as CardBack hides its state behind a closure,
-  // revealed when calling it produces the CardFront representation.
-  function draw(): CardBack {
-    const rank = cards[index]
-    index += 1
-    return {
-      flip: () => rank as CardFront
-    }   
-  }
-
-  return deck
+  return useDeck<CardDigits>(count, value, seed)
 }

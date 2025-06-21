@@ -24,7 +24,7 @@
 import { toValue } from 'vue'
 
 import { CardSurface, Empty, Deck, Card } from './deck'
-import { XO, useDeckXO } from './deck-xo'
+import { CardXO, useDeckXO } from './deck-xo'
 import { CardBoard3x3, BoardCoord, useCardBoard3x3, CellGroup } from './cardboard'
 
 export type Role = 'X' | 'O' | 'solo'
@@ -46,11 +46,11 @@ export interface PlayerRole {
   rolename: Role | undefined
 }
 
-type Hand = CardSurface<XO>
+type Hand = CardSurface<CardXO>
 
 export interface GameState {
   board: CardBoard3x3
-  deck: Deck<XO>
+  deck: Deck<CardXO>
   hand: Hand
   phase: 'init' | 'dealing' | 'wagering' | 'revealing' | 'terminal'
   history: Action[]
@@ -73,7 +73,7 @@ export type Action =
     }
   | {
       type: 'discard',
-      card: Card<XO>
+      card: Card<CardXO>
     }
   | { type: 'fold' }
   | { type: 'resign' }
@@ -180,7 +180,7 @@ export function useGameRules(): GameRules {
 
 // Summarize a game outcome
 export interface GameOutcome {
-  endgame: CardSurface<XO>[]
+  endgame: CardSurface<CardXO>[]
   outcome:
     | { type: 'win', focus: number[] }
     | { type: 'loss', focus: number[] }

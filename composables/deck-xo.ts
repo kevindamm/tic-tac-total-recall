@@ -21,20 +21,14 @@
 // 
 // github:KevinDamm/tic-tac-total-recall/deck-xo.ts
 
-import { useDeck, Deck, CardBack } from "./deck"
+import { useDeck, Deck, CardBack } from './deck'
 
 const DEFAULT_DECK_XO_SIZE = 10
 
 // Cards have a front and back, card front may be symbol "X" or symbol "O"
-export type XO = "X" | "O"
+export type CardXO = 'X' | 'O'
 
-export interface DeckXO extends Deck<XO> {
-  exhausted(): boolean
-
-  reset(order?: number[]): DeckXO
-  shuffle(): DeckXO
-  draw(): CardBack<XO>
-}
+export interface DeckXO extends Deck<CardXO> {}
 
 // COMPOSABLE useDeckXO
 //
@@ -43,9 +37,9 @@ export function useDeckXO(
     count: number = DEFAULT_DECK_XO_SIZE,
     seed?: number[]): DeckXO {
 
-  function value(index: number): XO {
-    return ((index & 1) >0) ? "X" : "O"
+  function value(index: number): CardXO {
+    return ((index & 1) >0) ? 'X' : 'O'
   }
 
-  return useDeck<XO>(count, value, seed)
+  return useDeck<CardXO>(count, value, seed)
 }
