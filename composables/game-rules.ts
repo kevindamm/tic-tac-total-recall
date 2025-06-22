@@ -23,8 +23,8 @@
 
 import { toValue } from 'vue'
 
-import { CardSurface, Empty, Deck, Card } from './deck'
-import { CardXO, useDeckXO } from './deck-xo'
+import { CardSurface, Empty, Deck, Card } from '../composables/deck'
+import { CardXO, useDeckXO } from '../composables/deck-xo'
 import { CardBoard3x3, BoardCoord, useCardBoard3x3, CellGroup } from './cardboard'
 
 export type Role = 'X' | 'O' | 'solo'

@@ -43,12 +43,13 @@ SOFTWARE.
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 import GameCard from './tttr-card.vue'
-import { CardSurface, Empty } from '../composables/deck-xo'
+import { CardSurface, Empty } from '../composables/deck'
+import { CardXO } from '../composables/deck-xo';
 
 const { row, col, card = Empty } = defineProps<{
   row: number
   col: number
-  card?: CardSurface
+  card?: CardSurface<CardXO>
 }>()
 
 const highlit = ref(false)

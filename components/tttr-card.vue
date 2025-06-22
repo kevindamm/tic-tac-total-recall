@@ -17,10 +17,11 @@
 
 
 <script lang="ts" setup>
-import { CardSurface, Empty } from '../composables/deck-xo';
+import { CardXO } from '../composables/deck-xo';
+import { Empty, CardSurface } from '../composables/deck';
 
 const { card = Empty } = defineProps<{
-  card: CardSurface
+  card: CardSurface<CardXO>
 }>()
 </script>
 

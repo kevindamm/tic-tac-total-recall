@@ -38,16 +38,17 @@ SOFTWARE.
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { Deck } from '../composables/deck-xo'
+import { Deck } from '../composables/deck'
+import { CardXO } from '../composables/deck-xo'
 
 const isDragging = ref(false)
 
 const { deck } = defineProps<{
-  deck: Deck
+  deck: Deck<CardXO>
 }>()
 
 const emit = defineEmits<{
-  draw: [deck: Deck]
+  draw: [deck: Deck<CardXO>]
 }>()
 </script>
 

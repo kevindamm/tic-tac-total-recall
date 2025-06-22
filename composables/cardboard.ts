@@ -22,7 +22,10 @@
 // github:KevinDamm/tic-tac-total-recall/cardboard.ts
 
 import { computed, type ComputedRef, ref, toValue } from 'vue'
-import { CardFront, CardSurface, Empty, Deck } from '../composables/deck-xo'
+import { CardSurface, Empty, Deck } from './deck'
+import { CardXO, DeckXO } from './deck-xo'
+
+type SurfaceXO = CardSurface<CardXO>
 
 export interface BoardCoord {
   row: number
@@ -33,22 +36,22 @@ export type CellGroup = 'all' | 'edges' | 'corners' | 'center' | BoardCoord[]
 
 export interface CardBoard3x3 {
   open: ComputedRef<BoardCoord[]>
-  cells: ComputedRef<CardSurface[]>
+  cells: ComputedRef<SurfaceXO[]>
   lineX: ComputedRef<boolean>
   lineO: ComputedRef<boolean>
 
   // getters
-  at(coord: BoardCoord): CardSurface
+  at(coord: BoardCoord): SurfaceXO
 
   // actions
-  deal(coord: BoardCoord, deck: Deck): void
+  deal(coord: BoardCoord, deck: DeckXO): void
   reveal(selection: CellGroup): void
   reset(): void
 }
 
 // Composable for representing the state and logic of an <M,N,K> board.
-export function useCardBoard3x3(clone?: (coord: BoardCoord) => CardSurface): CardBoard3x3 {
-  const board = ref<CardSurface[][]>(
+export function useCardBoard3x3(clone?: (coord: BoardCoord) => SurfaceXO): CardBoard3x3 {
+  const board = ref<SurfaceXO[][]>(
     new Array(3).map(() => new Array(3).map(() => Empty)))
 
   if (clone) {
@@ -79,7 +82,7 @@ export function useCardBoard3x3(clone?: (coord: BoardCoord) => CardSurface): Car
     ...board.value[2]])
   
   // Returns the representation of the board cell at position (row, col)
-  function at(coord: BoardCoord): CardSurface {
+  function at(coord: BoardCoord): SurfaceXO {
     let row = coord.row-1
     if (row in board.value) {
       let col = coord.col-1
@@ -147,7 +150,7 @@ export function useCardBoard3x3(clone?: (coord: BoardCoord) => CardSurface): Car
   })
 
   // Deal the top card of the deck onto the position at (row, col)
-  function deal(coord: BoardCoord, deck: Deck) {
+  function deal(coord: BoardCoord, deck: DeckXO) {
     if ((coord.row-1) in board.value && (coord.col-1) in board.value[coord.row-1])
     board.value[coord.row-1][coord.col-1] = {
       type: 'FaceDown',
